@@ -14,6 +14,8 @@ router.post('/signIn', async (req, res, next)=>{
             id: patient.id,
             name: patient.name,
         })
+    } else {
+        res.json('fail to login');
     }
 });
 

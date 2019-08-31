@@ -9,9 +9,9 @@ const cors = require('cors');
 require('dotenv').config({path: '.env'});
 
 const sequelize = require('./models').sequelize;
-const Patient = require('../models').Patient;
 const Room = require('../models').Room;
 const authRouter = require('./routes/auth');
+const roomRouter = require('./routes/room');
 
 const app = express();
 sequelize.sync();
@@ -22,6 +22,7 @@ app.use(express.urlencoded({extended: false, limit: '50mb'}));
 app.use(cors());
 
 app.use('/auth', authRouter);
+app.use('/room', roomRouter);
 app.get('*', (req, res, next)=> {
     res.sendFile(path.resolve(__dirname, './build/index.html'));
 });
@@ -108,9 +109,14 @@ io.sockets.on('connection', function(socket) {
         return tokens[2] + tokens[1] + tokens[0] + tokens[3] + tokens[4]
     };
 
-    //match event for patient
-    socket.on('match', function () {
-        console.log('patient match!');
+    //join doctor room
+    socket.on('join', function (room) {
+        console.log('patient joined!');
+        log('Client ID ' + socket.id + ' joined room ' + room);
+        io.sockets.in(room).emit('join', room);
+        socket.join(room);
+        socket.emit('joined', room, socket.id);
+        io.sockets.in(room).emit('ready');
     })
 });
 

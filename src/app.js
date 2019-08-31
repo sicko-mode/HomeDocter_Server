@@ -9,7 +9,7 @@ const cors = require('cors');
 require('dotenv').config({path: '.env'});
 
 const sequelize = require('./models').sequelize;
-const Room = require('../models').Room;
+const Room = require('./models').Room;
 const authRouter = require('./routes/auth');
 const roomRouter = require('./routes/room');
 

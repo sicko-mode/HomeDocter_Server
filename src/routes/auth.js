@@ -10,7 +10,7 @@ router.post('/signIn', async (req, res, next)=>{
         where: {id: req.body.id, password: req.body.password}
     });
     if (patient) {
-        res.json({
+        res.status(200).json({
             id: patient.id,
             name: patient.name,
         })

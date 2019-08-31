@@ -5,6 +5,7 @@ const fs = require('fs');
 const os = require('os');
 const socketIO = require('socket.io');
 const cors = require('cors');
+require('dotenv').config({path: '.env'});
 
 const app = express();
 

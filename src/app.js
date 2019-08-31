@@ -19,6 +19,9 @@ app.use(express.urlencoded({extended: false, limit: '50mb'}));
 app.use(cors());
 
 app.use('/auth', authRouter);
+app.get('*', (req, res, next)=> {
+    res.sendFile(path.resolve(__dirname, '../build/index.html'));
+});
 
 const options = {
 // Homedoctor_server/ubuntu/home/root
@@ -32,8 +35,6 @@ const server = https.createServer(options, app).listen(443, ()=>{
 
 var io = socketIO.listen(server);
 io.sockets.on('connection', function(socket) {
-    console.log(`connected ${socket}`);
-
     // convenience function to log server messages on the client
     function log() {
         var array = ['Message from server:'];
@@ -41,10 +42,9 @@ io.sockets.on('connection', function(socket) {
         socket.emit('log', array);
     }
 
-    socket.on('message', function(message) {
+    socket.on('message', function(room, message) {
         log('Client said: ', message);
-        // for a real app, would be room-only (not broadcast)
-        socket.broadcast.emit('message', message);
+        socket.emit('message', room, message);
     });
 
     socket.on('create or join', function(room) {
@@ -85,4 +85,9 @@ io.sockets.on('connection', function(socket) {
         console.log('received bye');
     });
 
+    //matching system
+    socket.on('', function () {
+        console.log();
+    });
 });
+

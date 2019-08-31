@@ -6,13 +6,13 @@ const Patient = require('../models').Patient;
 const Doctor = require('../models').Doctor;
 
 router.post('/signIn', async (req, res, next)=>{
-    const user = await User.findOne({
+    const patient = await Patient.findOne({
         where: {id: req.body.id, password: req.body.password}
     });
-    if (user) {
+    if (patient) {
         res.json({
-            id: user.id,
-            name: user.name,
+            id: patient.id,
+            name: patient.name,
         })
     }
 });

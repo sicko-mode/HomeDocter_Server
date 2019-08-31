@@ -10,7 +10,27 @@ var turnReady;
 
 var pcConfig = {
   'iceServers': [{
-    'urls': 'stun:stun.l.google.com:19302'
+    'urls': [
+        {url:'stun:stun01.sipphone.com'},
+        {url:'stun:stun.ekiga.net'},
+        {url:'stun:stun.fwdnet.net'},
+        {url:'stun:stun.ideasip.com'},
+        {url:'stun:stun.iptel.org'},
+        {url:'stun:stun.rixtelecom.se'},
+        {url:'stun:stun.schlund.de'},
+        {url:'stun:stun.l.google.com:19302'},
+        {url:'stun:stun1.l.google.com:19302'},
+        {url:'stun:stun2.l.google.com:19302'},
+        {url:'stun:stun3.l.google.com:19302'},
+        {url:'stun:stun4.l.google.com:19302'},
+        {url:'stun:stunserver.org'},
+        {url:'stun:stun.softjoys.com'},
+        {url:'stun:stun.voiparound.com'},
+        {url:'stun:stun.voipbuster.com'},
+        {url:'stun:stun.voipstunt.com'},
+        {url:'stun:stun.voxgratia.org'},
+        {url:'stun:stun.xten.com'}
+    ]
   }]
 };
 
@@ -120,7 +140,11 @@ console.log('Getting user media with constraints', constraints);
 
 if (location.hostname !== 'localhost') {
   requestTurn(
-    'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
+      {
+          url: 'turn:numb.viagenie.ca',
+          credential: 'muazkh',
+          username: 'webrtc@live.com'
+      }
   );
 }
 
@@ -207,24 +231,6 @@ function requestTurn(turnURL) {
       turnReady = true;
       break;
     }
-  }
-  if (!turnExists) {
-    console.log('Getting TURN server from ', turnURL);
-    // No TURN server. Get one from computeengineondemand.appspot.com:
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        var turnServer = JSON.parse(xhr.responseText);
-        console.log('Got TURN server: ', turnServer);
-        pcConfig.iceServers.push({
-          'urls': 'turn:' + turnServer.username + '@' + turnServer.turn,
-          'credential': turnServer.password
-        });
-        turnReady = true;
-      }
-    };
-    xhr.open('GET', turnURL, true);
-    xhr.send();
   }
 }
 

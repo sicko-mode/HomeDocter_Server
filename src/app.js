@@ -4,12 +4,14 @@ const https = require('https');
 const fs = require('fs');
 const os = require('os');
 const socketIO = require('socket.io');
+const cors = require('cors');
 
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: false, limit: '50mb'}));
+app.use(cors());
 
 const options = {
 // Homedoctor_server/ubuntu/home/root

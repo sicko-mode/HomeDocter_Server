@@ -3,11 +3,14 @@ const path = require('path');
 const https = require('https');
 const fs = require('fs');
 const os = require('os');
+const uuid4 = require('uuid4');
 const socketIO = require('socket.io');
 const cors = require('cors');
 require('dotenv').config({path: '.env'});
 
 const sequelize = require('./models').sequelize;
+const Patient = require('../models').Patient;
+const Room = require('../models').Room;
 const authRouter = require('./routes/auth');
 
 const app = express();
@@ -86,8 +89,28 @@ io.sockets.on('connection', function(socket) {
     });
 
     //matching system
-    socket.on('', function () {
-        console.log();
+    //ready event for doctor
+    socket.on('ready', async function (name, field) {
+        const roomId = uuid();
+        await Room.create({
+            id: roomId,
+            doctor: name,
+            field: field,
+        });
+        socket.join(roomId);
+        log('Client ID ' + socket.id + ' created room ' + room);
+        socket.emit('created', room, socket.id);
+        console.log('doctor ready!');
     });
+
+    const uuid = () => {
+        const tokens = uuid4().split('-');
+        return tokens[2] + tokens[1] + tokens[0] + tokens[3] + tokens[4]
+    };
+
+    //match event for patient
+    socket.on('match', function () {
+        console.log('patient match!');
+    })
 });
 

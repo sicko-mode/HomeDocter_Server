@@ -18,5 +18,6 @@ db.Sequelize = Sequelize;
 
 db.Patient = require('./Patient')(sequelize, Sequelize);
 db.Doctor = require('./Doctor')(sequelize, Sequelize);
+db.Room = require('./Room')(sequelize, Sequelize);
 
 module.exports = db;

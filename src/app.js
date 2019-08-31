@@ -7,7 +7,10 @@ const socketIO = require('socket.io');
 const cors = require('cors');
 require('dotenv').config({path: '.env'});
 
+const sequelize = require('./models').sequelize;
+
 const app = express();
+sequelize.sync();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());

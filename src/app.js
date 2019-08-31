@@ -42,9 +42,9 @@ io.sockets.on('connection', function(socket) {
         socket.emit('log', array);
     }
 
-    socket.on('message', function(room, message) {
+    socket.on('message', function(message) {
         log('Client said: ', message);
-        socket.emit('message', room, message);
+        socket.emit('message', message);
     });
 
     socket.on('create or join', function(room) {

@@ -8,6 +8,7 @@ const cors = require('cors');
 require('dotenv').config({path: '.env'});
 
 const sequelize = require('./models').sequelize;
+const authRouter = require('./routes/auth');
 
 const app = express();
 sequelize.sync();
@@ -16,6 +17,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: false, limit: '50mb'}));
 app.use(cors());
+
+app.use('/auth', authRouter);
 
 const options = {
 // Homedoctor_server/ubuntu/home/root
